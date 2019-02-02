@@ -1,0 +1,34 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'vs2017-win2016'
+
+steps:
+- script: | # TODO: build a custom VM image with these preinstalled, this takes too long
+    vcpkg install boost-test
+  displayName: install dependencies
+- task: CMake@1
+  inputs:
+    workingDirectory: $(Agent.BuildDirectory)
+    cmakeArgs: $(Build.Repository.LocalPath) -DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake
+  displayName: 'cmake'
+- task: MSBuild@1
+  inputs:
+    solution: $(Agent.BuildDirectory)/ALL_BUILD.vcxproj
+    configuration: "Debug"
+  displayName: "Debug build"
+- script: |
+    cd $(Agent.BuildDirectory)
+    ctest -C Debug
+  displayName: "Debug test"
+  # TODO: publish test results (or figure out how to use the Visual Studio Test task with cmake)
+- task: MSBuild@1
+  inputs:
+    solution: $(Agent.BuildDirectory)/ALL_BUILD.vcxproj
+    configuration: "Release"
+  displayName: "Release build"
+- script: |
+    cd $(Agent.BuildDirectory)
+    ctest -C Release
+  displayName: "Release test"
