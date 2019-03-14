@@ -12,6 +12,7 @@ matrix:
           packages:
             - g++-8
             - libboost-test-dev
+            - libsdl2-dev
       env:
         - CC=gcc-8
         - CXX=g++-8
@@ -19,6 +20,10 @@ matrix:
 
     - os: osx
       osx_image: xcode10.1
+      addons:
+        homebrew:
+          packages:
+          - sdl2
 
 before_install:
   - eval "${MATRIX_EVAL}"

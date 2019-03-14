@@ -6,7 +6,7 @@ pool:
 
 steps:
 - script: | # TODO: build a custom VM image with these preinstalled, this takes too long
-    vcpkg install boost-test
+    vcpkg install boost-test sdl2
   displayName: install dependencies
 - task: CMake@1
   inputs:
