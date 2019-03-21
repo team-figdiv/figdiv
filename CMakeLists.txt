@@ -6,6 +6,8 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules)
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
+add_compile_definitions(_LIBCPP_ENABLE_CXX17_REMOVED_AUTO_PTR) # boost still uses auto_ptr
+set(CMAKE_CXX_STANDARD 17)
 
 find_package(Boost COMPONENTS unit_test_framework REQUIRED)
 
